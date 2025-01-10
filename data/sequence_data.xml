@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Define the sequence -->
+        <record id="sequence_mbf_sph" model="ir.sequence">
+            <field name="name">Nomor Urut SPH</field>
+            <field name="code">mbf.sph</field>
+            <field name="prefix">SPH/</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+    </data>
+</odoo>

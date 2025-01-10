@@ -1,0 +1,80 @@
+<odoo>
+    <!-- Tree View (List View) -->
+    <record id="view_mbf_sph_tree" model="ir.ui.view">
+        <field name="name">mbf.sph.tree</field>
+        <field name="model">mbf.sph</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/> <!-- Nomor Surat Penawaran -->
+                <field name="date_penawaran"/> <!-- Tanggal Penawaran -->
+                <field name="perihal"/> <!-- Masa Berlaku -->
+                <field name="customer_id"/> <!-- Customer -->
+                <field name="user_id"/> <!-- User ID -->
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_mbf_sph_form" model="ir.ui.view">
+        <field name="name">mbf.sph.form</field>
+        <field name="model">mbf.sph</field>
+        <field name="arch" type="xml">
+            <form>
+              <header>
+                <!-- Add a button to print -->
+                <button name="print_sph_report" string="Print" type="object" class="btn-primary" icon="fa-print"/>
+            </header>
+                <sheet>
+  <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="customer_id"/> <!-- Customer -->
+                            <field name="perihal"/>
+                        </group>
+                        <group>
+                            <field name="date_penawaran"/> <!-- Tanggal Penawaran -->
+                            <field name="user_id"/> <!-- User ID -->                           
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="List Product" name="list_product">
+                            <group>
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/> <!-- Nama Produk -->
+                                        <field name="product_uom"/> <!-- Satuan (UOM) -->
+                                        <field name="price_unit"/> <!-- Harga Jual -->
+                                        <field name="discount"/> <!-- Diskon -->
+                                        <field name="price_net"/> <!-- Diskon -->
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Tambahan Catatan" name="add_note">
+                            <group>
+                                <field name="header"/>
+                                <field name="note"/>
+                                <field name="footer"/>                                    
+                                
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action untuk membuka model mbf.sph -->
+    <record id="action_mbf_sph" model="ir.actions.act_window">
+        <field name="name">Surat Penawaran Harga</field>
+        <field name="res_model">mbf.sph</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu Item untuk mengakses Surat Penawaran Harga -->
+    <menuitem id="menu_mbf_sph" name="Surat Penawaran Harga" parent="sale.sale_order_menu" action="action_mbf_sph"/>
+</odoo>

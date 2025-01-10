@@ -1,0 +1,10 @@
+<odoo>
+<record id="action_report_mbf_sph" model="ir.actions.report">
+    <field name="name">Surat Penawaran Report</field>
+    <field name="model">mbf.sph</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">mbf_sph.report_mbf_sph</field>
+    <field name="print_report_name">'Surat Penawaran - %s' % (object.name)</field>
+</record>
+</odoo>
+
