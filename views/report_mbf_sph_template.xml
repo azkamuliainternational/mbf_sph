@@ -1,15 +1,42 @@
 <odoo>
-    <template id="report_mbf_sph">
-        <t t-call="web.html_container">
-          <!-- <t t-call="web.external_layout"> -->
-            <t t-foreach="docs" t-as="doc">
-                <!-- <div class="page" style="position: relative; width: 100%; height: 100%; background: url('/mbf_sph/static/src/img/background.jpg') no-repeat center center; background-size: cover;"> -->
-                <div class="page" >
+    <template id="report_mbf_sph" >
+        <!-- <t t-call="web.html_container"> -->
+        <t t-if="not o" t-set="o" t-value="doc"/>
 
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
 
+  <div class="header">
+                <img src="/mbf_sph/static/src/img/header.jpg" style="width: 100%; margin-top: -20px;" />
+                <div class="o_clean_header">
                     
+                </div>
+            </div>
+
+        <!-- <t t-if="company.external_report_layout_id" t-call="{{company.external_report_layout_id.key}}"><t t-raw="0"/></t>
+        <t t-else="else" t-call="web.external_layout_standard"><t t-raw="0"/></t> -->
+
+
+
+
+
+            <t t-foreach="docs" t-as="doc">
+                <main>
+                 <div class="page" style="padding-left:50px;position: relative; width: 90%; height: 100%; background: url('/mbf_sph/static/src/img/background.jpg') no-repeat center center; background-size: cover;">
+               
                     <p><strong>Nomor:</strong><span t-field="doc.name"/></p>
-                    <p><strong>Headline:</strong>Surat Penawaran Harga </p>\
+                   
+                    <p><strong>Headline:</strong>Surat Penawaran Harga </p>
                     
                     <p><strong>Kepada:</strong> Yth.  <span t-field="doc.customer_id.name"/></p>
                     
@@ -48,13 +75,19 @@
 
                     <br/>
                     <p><strong>Surabaya, <span t-field="doc.date_penawaran" t-options="{'format': 'dd MMMM YYYY'}"/></strong></p>
-                    <br/>
-                    <p><strong>Hormat kami,</strong></p>
-                    <p>[<span t-field="doc.user_id"/>]</p> 
+ 
+
+                    <img t-att-src="'http://localhost:8012/mbf_sph/static/src/img/ttd.png'" style="width:250px;"/>
 
                 </div>
+                 </main>
             </t>
-        </t>
+
+            <div class="footer o_clean_footer">
+                <img src="/mbf_sph/static/src/img/footer.jpg" style="width: 100%;" />
+               
+            </div>
+        <!-- </t> -->
     </template>
 
 

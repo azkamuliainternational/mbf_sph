@@ -5,19 +5,34 @@ from datetime import date
 
 class MbfSph(models.Model):
     _name = 'mbf.sph'
+    _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']  # Include necessary mixins
+
     _description = 'Surat Penawaran Harga'
     _order = 'date_penawaran desc'
 
-    name = fields.Char(string='Nomor Surat Penawaran', required=True, copy=False, readonly=True, index=True, default=lambda self: self.env['ir.sequence'].next_by_code('mbf.sph'))
+    name = fields.Char(string='Nomor Surat Penawaran',  required=True, copy=False, readonly=True, index=True, default=lambda self: self.env['ir.sequence'].next_by_code('mbf.sph'))
     customer_id = fields.Many2one('res.partner', string='Customer', required=True)
     date_penawaran = fields.Date(string='Tanggal Penawaran',  default=lambda self: date.today(), required=True)
     date_berlaku = fields.Date(string='Tanggal Berlaku')
     user_id = fields.Many2one('res.users', string='User ', default=lambda self: self.env.user)
     masa_berlaku = fields.Integer(string='Masa Berlaku (Hari)')
-    perihal = fields.Char(required=True,string='Perihal')
-    header = fields.Text(required=True,string='Header Surat')
-    footer = fields.Text(required=True,string='Footer Surat')
+    perihal = fields.Char(required=True,string='Perihal', track_visibility='onchange')
+    header = fields.Text(required=True,string='Header Surat', track_visibility='onchange')
+    footer = fields.Text(required=True,string='Footer Surat', track_visibility='onchange')
     note = fields.Text(required=True,string='Note')
+    
+    cara_pengiriman =  fields.Char(string='Cara Pengiriman')
+    tgl_pengiriman = fields.Date(string='Tanggal Pengiriman')
+    alamat_pengiriman= fields.Char(string='Alamat Pengiriman')
+    respon= fields.Text(string='Catatan Customer')
+    state= fields.Selection(
+        [('draft', 'Draft'), ('confirm', 'Terkirim'), ('done', 'Berhasil'), ('cancel', 'Gagal')],
+        string='State',
+        default='draft',
+        required=True,
+        track_visibility='onchange'
+    )
+    
     
 
     line_ids = fields.One2many('mbf.sph.line', 'sph_id', string='Detail Produk')
@@ -28,6 +43,25 @@ class MbfSph(models.Model):
         """
         # This assumes you have a report action defined (replace `report_name` with your actual report)
         return self.env.ref('mbf_sph.action_report_mbf_sph').report_action(self)
+    
+    
+    @api.multi
+    def action_confirm(self):
+        for record in self:
+            record.state = 'confirm'
+
+    @api.multi
+    def action_done(self):
+        for record in self:
+            record.state = 'done'
+    @api.multi
+    def action_cancel(self):
+        for record in self:
+            record.state = 'cancel'
+    @api.multi
+    def action_reset_to_draft(self):
+        for record in self:
+            record.state = 'draft'    
 
 class MbfSphLine(models.Model):
     _name = 'mbf.sph.line'

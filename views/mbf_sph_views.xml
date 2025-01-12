@@ -9,6 +9,7 @@
                 <field name="date_penawaran"/> <!-- Tanggal Penawaran -->
                 <field name="perihal"/> <!-- Masa Berlaku -->
                 <field name="customer_id"/> <!-- Customer -->
+                <field name="state"/> <!-- User ID -->
                 <field name="user_id"/> <!-- User ID -->
             </tree>
         </field>
@@ -22,7 +23,15 @@
             <form>
               <header>
                 <!-- Add a button to print -->
+                 <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done,cancel"/>
+                 <button name="action_confirm" type="object" string="SPH Sudah Terkirim ke Customer" states="draft" class="btn-primary"/>                               
+                <button name="action_reset_to_draft" string="Kembali Ke Draft" type="object" class="btn-secondary" states="confirm,done,cancel" icon="fa-undo"/>
+            
+
                 <button name="print_sph_report" string="Print" type="object" class="btn-primary" icon="fa-print"/>
+                        <button name="action_done" type="object" string="SPH Direspon Positif" states="confirm" class="btn-success" icon="fa-smile-o"/>
+                    <button name="action_cancel" type="object" string="SPH Direspon Negatif" states="confirm" class="btn-danger" icon="fa-frown-o"/> 
+
             </header>
                 <sheet>
   <div class="oe_title">
@@ -54,7 +63,7 @@
                                 </field>
                             </group>
                         </page>
-                        <page string="Tambahan Catatan" name="add_note">
+                        <page string="Header,Footer and Note" name="add_note">
                             <group>
                                 <field name="header"/>
                                 <field name="note"/>
@@ -62,8 +71,21 @@
                                 
                             </group>
                         </page>
+                          <page string="Tambahan Catatan" name="add_note">
+                            <group>
+                                <field name="cara_pengiriman" placeholder="Cara pengiriman menggunakan WA,Email atau Surat"/>
+                                <field name="alamat_pengiriman" placeholder="alamat mengiriman, bisa Email atau no WA"/>
+                                <field name="respon"  placeholder="Respon customer atas Penawaran Harga"/> 
+
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
+                 <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="activity_ids" widget="mail_activity"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
             </form>
         </field>
     </record>
@@ -73,8 +95,9 @@
         <field name="name">Surat Penawaran Harga</field>
         <field name="res_model">mbf.sph</field>
         <field name="view_mode">tree,form</field>
+
     </record>
 
     <!-- Menu Item untuk mengakses Surat Penawaran Harga -->
-    <menuitem id="menu_mbf_sph" name="Surat Penawaran Harga" parent="sale.sale_order_menu" action="action_mbf_sph"/>
+    <menuitem id="menu_mbf_sph" name="Surat Penawaran Harga" parent="sale.sale_order_menu" action="action_mbf_sph" sequence="0"/>
 </odoo>
